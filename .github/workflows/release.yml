@@ -25,6 +25,14 @@ jobs:
   build-and-release:
     runs-on: windows-latest
     steps:
+      - name: Check SOURCE_TOKEN is set
+        shell: bash
+        run: |
+          if [ -z "${{ secrets.SOURCE_TOKEN }}" ]; then
+            echo "::error::Secret SOURCE_TOKEN is not set. Create a Personal Access Token with read access to the PRIVATE repo Drucky10/cytometer-receiver, then add it here: Settings -> Secrets and variables -> Actions -> New repository secret, name SOURCE_TOKEN. See README. (Or make the first release manually by uploading the .exe files.)"
+            exit 1
+          fi
+
       - name: Checkout private source
         uses: actions/checkout@v4
         with:
